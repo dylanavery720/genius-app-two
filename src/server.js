@@ -27,6 +27,18 @@ app.get('callback', (req, res) => {
       response_type: 'code'
     }
   }
+
+  request.post(options, (error, response) => {
+    console.log('status code:', response.statusCode)
+    if (response.statusCode > 399) {
+      console.log('ERRORSSSS')
+    } else {
+      console.log(response.statusCode)
+      let body = JSON.parse(response.body)
+      console.log(body.access_token)
+    }
+  })
+
 })
 
 app.listen(3000, () => {
