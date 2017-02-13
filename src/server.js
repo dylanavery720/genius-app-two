@@ -1,5 +1,6 @@
 const express = require('express');
 const request = require('request');
+const cors = require('express-cors')
 
 const app = express()
 
@@ -10,18 +11,25 @@ const config = {
  clientSecret: process.env.GENIUS_CLIENT_SECRET
 }
 
+// app.use(cors())
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*")
+  res.header("Access-Control-Allow-Origin", "Origin, X-Requested-With, Content-Type, Accept")
+  next()
+})
+
 app.get('/', (request, response) => {
   let authUrl = `https://api.genius.com/oauth/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=${config.scope}&state=&response_type=code`
   response.redirect(authUrl)
 })
 
-app.get('callback', (req, res) => {
+app.get('/callback', (req, res, next) => {
   let options = {
     url: 'https://api.genius.com/oauth/token',
     form: {
       code: req.query.code,
       client_secret: process.env.GENIUS_CLIENT_SECRET,
-      grant_type: 'authorization_code'
+      grant_type: 'authorization_code',
       client_id: config.clientId,
       redirect_uri: config.redirectUri,
       response_type: 'code'
@@ -38,6 +46,11 @@ app.get('callback', (req, res) => {
       console.log(body.access_token)
     }
   })
+
+  // fetch(options.url, {
+  //   method: 'POST',
+  //   body: options.form
+  // }).then(data => console.log(data))
 
 })
 
