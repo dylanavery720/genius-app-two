@@ -1,8 +1,10 @@
 const express = require('express');
 const request = require('request');
-const cors = require('express-cors')
+const cors = require('cors')
 
 const app = express()
+
+app.use(cors())
 
 const config = {
   clientId: "uY-l55ombZgi1T9IF1Jl5Cb3wGZqw9uC444WRPHPK6TOu6aIFELNvtIZA3HWqngr",
@@ -11,7 +13,7 @@ const config = {
  clientSecret: process.env.GENIUS_CLIENT_SECRET
 }
 
-// app.use(cors())
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Origin", "Origin, X-Requested-With, Content-Type, Accept")
