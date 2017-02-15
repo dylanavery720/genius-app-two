@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+const request = require('request');
+const $ = require('jquery')
 
 class App extends Component {
   constructor(){
@@ -15,14 +17,26 @@ class App extends Component {
 
   at() {
     let headers = {
-      'Authorization': 'Bearer '  + this.state.at,
-      'Access-Control-Allow-Origin': '*',
-  }
+      'Authorization': 'Bearer ' + this.state.at,
+      'Accept': 'application/json',
+    }
       fetch('https://api.genius.com/artists/16775/songs', {
-        method: "GET",
-        headers: headers
+        headers: headers,
       }).then(data => console.log('im data', data))
+        .catch(err => console.log(err))
       console.log(headers)
+      // $.ajax({
+      //   'Type': 'GET',
+      //   'url': 'https://api.genius.com/artists/16775/songs',
+      //   'Authorization': 'Bearer NiyyFNs6muUxFv-7gOwGHYzJm0-Qv7p-9xmB8NmuqG2-rU76QHnvK9SQc9hCnQzv',
+      //   'Accept': 'application/json',
+      //   success: (data) => {
+      //     console.log(data)
+      //   },
+      //   error: (error) => {
+      //     console.log(error)
+      //   }
+      // })
   }
 
   updateState(e) {

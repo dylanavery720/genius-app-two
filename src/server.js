@@ -1,10 +1,10 @@
 const express = require('express');
 const request = require('request');
-const cors = require('cors')
+// const cors = require('express-cors')
 
 const app = express()
 
-app.use(cors())
+// app.use(cors())
 
 const config = {
   clientId: "uY-l55ombZgi1T9IF1Jl5Cb3wGZqw9uC444WRPHPK6TOu6aIFELNvtIZA3HWqngr",
@@ -16,11 +16,11 @@ const config = {
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
-  res.header("Access-Control-Allow-Origin", "Origin, X-Requested-With, Content-Type, Accept")
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
   next()
 })
 
-app.get('/', (request, response) => {
+app.get('/', (request, response, next) => {
   let authUrl = `https://api.genius.com/oauth/authorize?client_id=${config.clientId}&redirect_uri=${config.redirectUri}&scope=${config.scope}&state=&response_type=code`
   response.redirect(authUrl)
 })
@@ -41,12 +41,27 @@ app.get('/callback', (req, res, next) => {
   request.post(options, (error, response) => {
     console.log('status code:', response.statusCode)
     if (response.statusCode > 399) {
-      console.log('ERRORSSSS')
+      console.log('error', error)
     } else {
       console.log(response.statusCode)
       let body = JSON.parse(response.body)
       console.log(body.access_token)
     }
+  })
+
+  app.get('/test', (req, res, next) => {
+    let ops = {
+      url: 'https://api.genius.com/artists/16775/songs',
+      form: {
+      Authorization: 'Bearer agb_8U_brbKx0JVa6wnGaRXczpiY71M908U8OtlymJrh5517JrPzVWqtWjQFEFrf',
+      Accept: 'application/json',
+    }
+  }
+
+    request.get(ops, (error, response) => {
+    console.log(error)
+    console.log(response)
+    })
   })
 
   // fetch(options.url, {
