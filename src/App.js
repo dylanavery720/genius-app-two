@@ -17,12 +17,19 @@ class App extends Component {
 
   at() {
     let headers = {
-      'Authorization': 'Bearer ' + this.state.at,
-      'Accept': 'application/json',
+      url: 'https://api.genius.com/artists/16775/songs',
+      headers: {
+      Authorization: 'J3DuqYmVBrbPPQetLIX_1CnV0b0p6SeyFtPOsvHEKXtS1DTD5XRRBdHm0Zetqu3f',
+      Accept: 'application/json',
     }
+  }
       fetch('https://api.genius.com/artists/16775/songs', {
-        headers: headers,
-      }).then(data => console.log('im data', data))
+        headers: {
+        Authorization: 'Bearer J3DuqYmVBrbPPQetLIX_1CnV0b0p6SeyFtPOsvHEKXtS1DTD5XRRBdHm0Zetqu3f',
+        Accept: 'application/json',
+      }
+    })
+      .then(data => console.log('im data', data))
         .catch(err => console.log(err))
       console.log(headers)
       // $.ajax({

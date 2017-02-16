@@ -1,7 +1,7 @@
 const express = require('express');
 const request = require('request');
+const bodyParser = require('body-parser')
 // const cors = require('express-cors')
-
 const app = express()
 
 // app.use(cors())
@@ -13,6 +13,7 @@ const config = {
  clientSecret: process.env.GENIUS_CLIENT_SECRET
 }
 
+app.use(bodyParser.json())
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
@@ -52,7 +53,7 @@ app.get('/callback', (req, res, next) => {
   app.get('/test', (req, res, next) => {
     let ops = {
       url: 'https://api.genius.com/artists/16775/songs',
-      form: {
+      headers: {
       Authorization: 'Bearer agb_8U_brbKx0JVa6wnGaRXczpiY71M908U8OtlymJrh5517JrPzVWqtWjQFEFrf',
       Accept: 'application/json',
     }
@@ -60,7 +61,8 @@ app.get('/callback', (req, res, next) => {
 
     request.get(ops, (error, response) => {
     console.log(error)
-    console.log(response)
+    let body = JSON.parse(response.body)
+    console.log(body.response.songs)
     })
   })
 
