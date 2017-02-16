@@ -1,6 +1,7 @@
 const express = require('express');
 const request = require('request');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const path = require('path');
 // const cors = require('express-cors')
 const app = express()
 
@@ -49,28 +50,22 @@ app.get('/callback', (req, res, next) => {
       console.log(body.access_token)
     }
   })
+})
 
-  app.get('/test', (req, res, next) => {
-    let ops = {
-      url: 'https://api.genius.com/artists/16775/songs',
-      headers: {
+app.get('/test', (req, res, next) => {
+  let ops = {
+    url: 'https://api.genius.com/artists/16775/songs',
+    headers: {
       Authorization: 'Bearer agb_8U_brbKx0JVa6wnGaRXczpiY71M908U8OtlymJrh5517JrPzVWqtWjQFEFrf',
       Accept: 'application/json',
     }
   }
-
-    request.get(ops, (error, response) => {
+  request.get(ops, (error, response) => {
     console.log(error)
     let body = JSON.parse(response.body)
     console.log(body.response.songs)
-    })
   })
-
-  // fetch(options.url, {
-  //   method: 'POST',
-  //   body: options.form
-  // }).then(data => console.log(data))
-
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 })
 
 app.listen(3000, () => {
